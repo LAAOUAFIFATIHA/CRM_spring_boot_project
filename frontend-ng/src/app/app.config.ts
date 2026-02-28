@@ -16,7 +16,15 @@ import {
   LogOut,
   ArrowDown,
   Building,
-  DollarSign
+  DollarSign,
+  MessageSquareWarning,
+  Calendar,
+  Download,
+  Eye,
+  Plus,
+  User,
+  CheckCircle2,
+  Phone
 } from 'lucide-angular';
 
 export const appConfig: ApplicationConfig = {
@@ -37,7 +45,15 @@ export const appConfig: ApplicationConfig = {
       LogOut,
       ArrowDown,
       Building,
-      DollarSign
+      DollarSign,
+      MessageSquareWarning,
+      Calendar,
+      Download,
+      Eye,
+      Plus,
+      User,
+      CheckCircle2,
+      Phone
     }))
   ]
 };

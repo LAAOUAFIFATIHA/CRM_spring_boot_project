@@ -9,7 +9,8 @@ import {
     Lock,
     ArrowRight,
     ShieldCheck,
-    HandCoins
+    HandCoins,
+    User
 } from 'lucide-angular';
 
 @Component({
@@ -25,6 +26,7 @@ export class LoginPageComponent {
     readonly ArrowRight = ArrowRight;
     readonly ShieldCheck = ShieldCheck;
     readonly HandCoins = HandCoins;
+    readonly User = User;
 
     email = '';
     password = '';
@@ -53,10 +55,18 @@ export class LoginPageComponent {
 
             // For demo: any non-empty credentials work
             localStorage.setItem('syndic_token', 'demo-token-' + Math.random());
+
+            // Auto-detect role by email for the demo
+            if (this.email === 'ahmed.bensalah@email.com') {
+                this.selectedRole = 'coproprietaire';
+            }
+
             localStorage.setItem('user_role', this.selectedRole);
 
             if (this.selectedRole === 'dg') {
                 this.router.navigate(['/dashboard']);
+            } else if (this.selectedRole === 'coproprietaire') {
+                this.router.navigate(['/coproprietaire/dashboard']);
             } else {
                 this.router.navigate(['/recouvrement']);
             }

@@ -13,18 +13,24 @@
             </div>
 
             <!-- Role Selection -->
-            <div class="grid grid-cols-2 gap-4 p-1 bg-white/5 rounded-xl border border-white/10">
+            <div class="grid grid-cols-3 gap-2 p-1 bg-white/5 rounded-xl border border-white/10">
                 <button (click)="selectRole('dg')"
                     [ngClass]="selectedRole === 'dg' ? 'bg-blue-600 text-white shadow-lg' : 'text-gray-400 hover:text-white'"
-                    class="flex items-center justify-center gap-2 py-3 rounded-lg text-sm font-semibold transition-all">
+                    class="flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-lg text-xs leading-tight font-semibold transition-all">
                     <lucide-icon [name]="ShieldCheck" class="h-4 w-4"></lucide-icon>
-                    Direction Générale
+                    Direction
                 </button>
                 <button (click)="selectRole('recouvrement')"
                     [ngClass]="selectedRole === 'recouvrement' ? 'bg-blue-600 text-white shadow-lg' : 'text-gray-400 hover:text-white'"
-                    class="flex items-center justify-center gap-2 py-3 rounded-lg text-sm font-semibold transition-all">
+                    class="flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-lg text-xs leading-tight font-semibold transition-all">
                     <lucide-icon [name]="HandCoins" class="h-4 w-4"></lucide-icon>
                     Recouvrement
+                </button>
+                <button (click)="selectRole('coproprietaire')"
+                    [ngClass]="selectedRole === 'coproprietaire' ? 'bg-teal-600 text-white shadow-lg' : 'text-gray-400 hover:text-white'"
+                    class="flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-lg text-xs leading-tight font-semibold transition-all">
+                    <lucide-icon [name]="User" class="h-4 w-4"></lucide-icon>
+                    Copropriétaire
                 </button>
             </div>
 

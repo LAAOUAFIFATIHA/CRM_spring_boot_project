@@ -103,6 +103,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
 
     logout() {
         localStorage.removeItem('syndic_token');
+        localStorage.removeItem('user_role');
         this.router.navigate(['/login']);
     }
 

@@ -1,0 +1,143 @@
+<div class="space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100 fill-mode-both">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-3xl font-black tracking-tight text-slate-900">Mes documents</h1>
+            <p class="text-slate-500 mt-1 text-lg">Retrouvez tous vos fichiers liés à la copropriété</p>
+        </div>
+
+        <div class="relative w-full sm:w-72 group">
+            <lucide-icon [name]="Search"
+                class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400 group-focus-within:text-teal-500 transition-colors"></lucide-icon>
+            <input type="text" placeholder="Rechercher..."
+                class="w-full bg-white border border-slate-200 rounded-xl py-3 pl-12 pr-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all placeholder:text-slate-400 shadow-sm">
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+
+        <!-- Main Documents List -->
+        <div class="lg:col-span-2 space-y-8">
+
+            <!-- Section: Documents légaux -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/60 overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-100 flex items-center gap-3 bg-slate-50/50">
+                    <div class="p-2 bg-indigo-100 text-indigo-600 rounded-lg">
+                        <lucide-icon [name]="Folder" class="h-5 w-5"></lucide-icon>
+                    </div>
+                    <h2 class="text-lg font-bold text-slate-800">Documents légaux</h2>
+                </div>
+                <div class="divide-y divide-slate-100 p-2">
+                    <div *ngFor="let doc of documentsLegaux"
+                        class="flex items-center justify-between p-4 hover:bg-slate-50 rounded-xl transition-colors group">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="h-10 w-10 bg-slate-100 text-slate-400 rounded-lg flex items-center justify-center group-hover:bg-teal-50 group-hover:text-teal-500 transition-colors">
+                                <lucide-icon [name]="FileText" class="h-5 w-5"></lucide-icon>
+                            </div>
+                            <div>
+                                <h3
+                                    class="font-bold text-slate-700 group-hover:text-teal-700 transition-colors cursor-pointer truncate max-wxs sm:max-w-md">
+                                    {{doc.nom}}</h3>
+                                <p class="text-xs font-medium text-slate-400 mt-0.5">Ajouté le {{doc.date}} &bull;
+                                    {{doc.taille}} &bull; PDF</p>
+                            </div>
+                        </div>
+                        <button
+                            class="p-2 text-slate-400 hover:bg-teal-50 hover:text-teal-600 rounded-lg transition-colors flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-teal-500/20">
+                            <lucide-icon [name]="Download" class="h-5 w-5"></lucide-icon>
+                            <span class="text-sm font-semibold hidden sm:inline">Télécharger</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section: Documents financiers -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/60 overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-100 flex items-center gap-3 bg-slate-50/50">
+                    <div class="p-2 bg-emerald-100 text-emerald-600 rounded-lg">
+                        <lucide-icon [name]="Folder" class="h-5 w-5"></lucide-icon>
+                    </div>
+                    <h2 class="text-lg font-bold text-slate-800">Documents financiers</h2>
+                </div>
+                <div class="divide-y divide-slate-100 p-2">
+                    <div *ngFor="let doc of documentsFinanciers"
+                        class="flex items-center justify-between p-4 hover:bg-slate-50 rounded-xl transition-colors group">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="h-10 w-10 bg-slate-100 text-slate-400 rounded-lg flex items-center justify-center group-hover:bg-teal-50 group-hover:text-teal-500 transition-colors">
+                                <lucide-icon [name]="FileText" class="h-5 w-5"></lucide-icon>
+                            </div>
+                            <div>
+                                <h3
+                                    class="font-bold text-slate-700 group-hover:text-teal-700 transition-colors cursor-pointer truncate max-w-[200px] sm:max-w-md">
+                                    {{doc.nom}}</h3>
+                                <p class="text-xs font-medium text-slate-400 mt-0.5">Ajouté le {{doc.date}} &bull;
+                                    {{doc.taille}} &bull; PDF</p>
+                            </div>
+                        </div>
+                        <button
+                            class="p-2 text-slate-400 hover:bg-teal-50 hover:text-teal-600 rounded-lg transition-colors flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-teal-500/20">
+                            <lucide-icon [name]="Download" class="h-5 w-5"></lucide-icon>
+                            <span class="text-sm font-semibold hidden sm:inline">Télécharger</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section: Procès-verbaux -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/60 overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-100 flex items-center gap-3 bg-slate-50/50">
+                    <div class="p-2 bg-amber-100 text-amber-600 rounded-lg">
+                        <lucide-icon [name]="Folder" class="h-5 w-5"></lucide-icon>
+                    </div>
+                    <h2 class="text-lg font-bold text-slate-800">Procès-verbaux</h2>
+                </div>
+                <div class="divide-y divide-slate-100 p-2">
+                    <div *ngFor="let doc of procesVerbaux"
+                        class="flex items-center justify-between p-4 hover:bg-slate-50 rounded-xl transition-colors group">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="h-10 w-10 bg-slate-100 text-slate-400 rounded-lg flex items-center justify-center group-hover:bg-teal-50 group-hover:text-teal-500 transition-colors">
+                                <lucide-icon [name]="FileText" class="h-5 w-5"></lucide-icon>
+                            </div>
+                            <div>
+                                <h3
+                                    class="font-bold text-slate-700 group-hover:text-teal-700 transition-colors cursor-pointer truncate max-w-[200px] sm:max-w-md">
+                                    {{doc.nom}}</h3>
+                                <p class="text-xs font-medium text-slate-400 mt-0.5">Ajouté le {{doc.date}} &bull;
+                                    {{doc.taille}} &bull; PDF</p>
+                            </div>
+                        </div>
+                        <button
+                            class="p-2 text-slate-400 hover:bg-teal-50 hover:text-teal-600 rounded-lg transition-colors flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-teal-500/20">
+                            <lucide-icon [name]="Download" class="h-5 w-5"></lucide-icon>
+                            <span class="text-sm font-semibold hidden sm:inline">Télécharger</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Right Side Panel / Batch Actions -->
+        <div class="lg:sticky lg:top-8 space-y-6">
+            <div
+                class="bg-white rounded-2xl shadow-sm border border-slate-200/60 overflow-hidden p-6 text-center flex flex-col items-center">
+                <div
+                    class="h-16 w-16 bg-slate-50 border border-slate-100 text-slate-300 rounded-2xl flex items-center justify-center mb-4 transform -rotate-12">
+                    <lucide-icon [name]="Folder" class="h-8 w-8"></lucide-icon>
+                </div>
+                <h3 class="font-bold text-lg text-slate-800 mb-2">Dossier Complet</h3>
+                <p class="text-sm text-slate-500 mb-6 font-medium leading-relaxed">Téléchargez une archive .ZIP
+                    contenant tous vos documents, classés par dossiers.</p>
+                <button
+                    class="w-full bg-[#1E293B] hover:bg-slate-800 text-white font-semibold py-3 border border-slate-700 px-6 rounded-xl shadow-lg shadow-slate-900/10 transition-all flex justify-center items-center gap-2">
+                    <lucide-icon [name]="Download" class="h-5 w-5"></lucide-icon>
+                    Télécharger tout
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
