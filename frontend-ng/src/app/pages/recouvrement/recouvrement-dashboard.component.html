@@ -1,0 +1,199 @@
+<div class="p-6 space-y-8 animate-in fade-in duration-700">
+    <!-- Header Section -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-900 tracking-tight">GESTION DU RECOUVREMENT</h1>
+            <p class="text-gray-500 text-sm">Suivi des paiements, impayés et relations CRM clients.</p>
+        </div>
+        <div class="flex items-center gap-3">
+            <button
+                class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-all shadow-sm">
+                <lucide-icon [name]="Filter" class="h-4 w-4"></lucide-icon>
+                Filtrer
+            </button>
+            <button
+                class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-all shadow-md shadow-blue-500/20">
+                <lucide-icon [name]="HandCoins" class="h-4 w-4"></lucide-icon>
+                Encaisser un paiement
+            </button>
+        </div>
+    </div>
+
+    <!-- KPI Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <app-kpi-card title="Taux de Recouvrement" [value]="recouvrementRate + '%'"
+            [trend]="{ value: '+3.2%', isPositive: true }" [icon]="TrendingUp" color="blue"></app-kpi-card>
+
+        <app-kpi-card title="Total à Recouvrer" [value]="totalToCollect" [trend]="{ value: '+12%', isPositive: false }"
+            [icon]="Wallet" color="amber"></app-kpi-card>
+
+        <app-kpi-card title="Copro. Non-Payés" [value]="unpaidList.length.toString()"
+            [trend]="{ value: '-2', isPositive: true }" [icon]="UserX" color="red"></app-kpi-card>
+
+        <app-kpi-card title="Récl. Paiement" [value]="pendingReclamations.toString()"
+            [trend]="{ value: '+5', isPositive: false }" [icon]="MessageSquareWarning" color="purple"></app-kpi-card>
+    </div>
+
+    <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+        <!-- Main Content: Unpaid List -->
+        <div class="xl:col-span-2 space-y-6">
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                <div class="p-6 border-b border-gray-50 flex items-center justify-between">
+                    <h2 class="text-lg font-semibold text-gray-900">Liste des Impayés Prioritaires</h2>
+                    <div class="relative">
+                        <lucide-icon [name]="Search"
+                            class="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></lucide-icon>
+                        <input type="text" placeholder="Rechercher par nom..."
+                            class="pl-10 pr-4 py-2 bg-gray-50 border-none rounded-lg text-sm focus:ring-2 focus:ring-blue-500 w-64">
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-gray-50/50 text-gray-500 text-xs uppercase tracking-wider">
+                                <th class="px-6 py-4 font-semibold">Copropriétaire</th>
+                                <th class="px-6 py-4 font-semibold">Résidence/Lot</th>
+                                <th class="px-6 py-4 font-semibold text-right">Montant Dû</th>
+                                <th class="px-6 py-4 font-semibold">Retard</th>
+                                <th class="px-6 py-4 font-semibold">Statut Relance</th>
+                                <th class="px-6 py-4 font-semibold">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-50 transition-all">
+                            <tr *ngFor="let item of unpaidList" class="hover:bg-blue-50/30 transition-colors group">
+                                <td class="px-6 py-4">
+                                    <div class="font-medium text-gray-900">{{item.name}}</div>
+                                    <div class="text-xs text-gray-400">ID: #00{{item.id}}</div>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-600">
+                                    <div>{{item.residence}}</div>
+                                    <div class="text-xs font-mono text-blue-600">{{item.lot}}</div>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <span class="text-sm font-bold text-gray-900">{{item.amount}}</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700">
+                                        {{item.delay}}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-500">
+                                    {{item.status}}
+                                </td>
+                                <td class="px-6 py-4">
+                                    <button
+                                        class="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all">
+                                        <lucide-icon [name]="HandCoins" class="h-4 w-4"></lucide-icon>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="p-4 bg-gray-50/50 text-center">
+                    <button class="text-sm font-medium text-blue-600 hover:text-blue-700">Voir tous les impayés
+                        (124)</button>
+                </div>
+            </div>
+
+            <!-- Recouvrement Analytics Card -->
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-lg font-semibold text-gray-900">Progression du Recouvrement</h2>
+                    <div class="flex gap-2">
+                        <span class="flex items-center gap-1 text-xs text-gray-500">
+                            <span class="h-2 w-2 rounded-full bg-blue-500"></span> Collecté
+                        </span>
+                        <span class="flex items-center gap-1 text-xs text-gray-500">
+                            <span class="h-2 w-2 rounded-full bg-gray-200"></span> À collecter
+                        </span>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between text-sm mb-2">
+                        <span class="text-gray-600">Objectif mensuel: 1,200,000 MAD</span>
+                        <span class="font-bold text-blue-600">{{recouvrementRate}}%</span>
+                    </div>
+                    <div class="h-4 w-full bg-gray-100 rounded-full overflow-hidden">
+                        <div class="h-full transition-all duration-1000 ease-out" [ngClass]="getProgressBarColor()"
+                            [style.width.%]="recouvrementRate"></div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mt-6">
+                        <div class="p-4 rounded-xl bg-green-50/50 border border-green-100">
+                            <div class="text-xs text-green-600 font-medium mb-1 uppercase tracking-wider">Versé au
+                                compte</div>
+                            <div class="text-xl font-bold text-green-700">{{collectedThisMonth}}</div>
+                        </div>
+                        <div class="p-4 rounded-xl bg-blue-50/50 border border-blue-100">
+                            <div class="text-xs text-blue-600 font-medium mb-1 uppercase tracking-wider">Promesses de
+                                paiement</div>
+                            <div class="text-xl font-bold text-blue-700">185,000 MAD</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Reclamations & Recent Payments -->
+        <div class="space-y-8">
+            <!-- Related Reclamations -->
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                <div class="flex items-center gap-2 mb-6">
+                    <lucide-icon [name]="MessageSquareWarning" class="h-5 w-5 text-purple-500"></lucide-icon>
+                    <h2 class="text-lg font-semibold text-gray-900">Réclamations liées</h2>
+                </div>
+                <div class="space-y-4">
+                    <div *ngFor="let rec of relatedReclamations"
+                        class="p-4 rounded-xl border border-gray-50 hover:border-blue-100 hover:shadow-md transition-all cursor-pointer group">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="text-xs font-mono text-gray-400 font-medium">#{{rec.id}}</span>
+                            <app-status-badge [status]="rec.status"></app-status-badge>
+                        </div>
+                        <div class="text-sm font-semibold text-gray-800 group-hover:text-blue-600 transition-colors">
+                            {{rec.subject}}</div>
+                        <div class="mt-2 flex items-center justify-between">
+                            <div class="text-xs text-gray-500">{{rec.copro}}</div>
+                            <div class="text-[10px] text-gray-400 uppercase tracking-tighter">{{rec.date}}</div>
+                        </div>
+                    </div>
+                </div>
+                <button
+                    class="w-full mt-6 py-2 bg-gray-50 text-gray-600 rounded-xl text-xs font-bold hover:bg-gray-100 transition-colors uppercase tracking-widest">
+                    Voir toutes les réclamations
+                </button>
+            </div>
+
+            <!-- Recent Payments History -->
+            <div class="bg-[#0f0f1a] rounded-2xl p-6 text-white shadow-xl shadow-blue-900/10">
+                <div class="flex items-center gap-2 mb-6">
+                    <lucide-icon [name]="History" class="h-5 w-5 text-blue-400"></lucide-icon>
+                    <h2 class="text-lg font-semibold">Derniers Versements</h2>
+                </div>
+                <div class="space-y-6">
+                    <div *ngFor="let p of recentPayments" class="flex items-start gap-4">
+                        <div
+                            class="h-10 w-10 shrink-0 rounded-full bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
+                            <lucide-icon [name]="ArrowDownRight" class="h-5 w-5 text-green-400"></lucide-icon>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm font-medium truncate">{{p.name}}</p>
+                                <p class="text-sm font-bold text-green-400">+{{p.amount}}</p>
+                            </div>
+                            <div class="flex items-center justify-between mt-1">
+                                <p class="text-[10px] text-gray-500">{{p.mode}}</p>
+                                <p class="text-[10px] text-gray-500">{{p.date}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button
+                    class="w-full mt-8 py-3 bg-blue-600/20 text-blue-400 rounded-xl text-xs font-bold hover:bg-blue-600 hover:text-white transition-all">
+                    Exporter l'historique
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

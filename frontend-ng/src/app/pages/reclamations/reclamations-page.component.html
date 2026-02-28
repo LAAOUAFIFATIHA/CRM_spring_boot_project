@@ -1,0 +1,221 @@
+<div class="p-6 space-y-8 animate-in fade-in duration-700">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-900 tracking-tight">CENTRE DES RÉCLAMATIONS</h1>
+            <p class="text-gray-500 text-sm">Gérez et suivez les demandes d'intervention de vos copropriétaires.</p>
+        </div>
+        <div class="flex items-center gap-3">
+            <button
+                class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-all shadow-sm">
+                <lucide-icon [name]="Filter" class="h-4 w-4"></lucide-icon>
+                Filtre
+            </button>
+            <button
+                class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-all shadow-md">
+                <lucide-icon [name]="Plus" class="h-4 w-4"></lucide-icon>
+                Nouvelle Réclamation
+            </button>
+        </div>
+    </div>
+
+    <!-- Search & Quick Stats -->
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div class="lg:col-span-3">
+            <div class="relative group">
+                <lucide-icon [name]="Search"
+                    class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-blue-500 transition-colors"></lucide-icon>
+                <input type="text" placeholder="Rechercher une réclamation par nom, ID ou résidence..."
+                    class="w-full pl-12 pr-4 py-3 bg-white border border-gray-100 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-sm">
+            </div>
+        </div>
+        <div
+            class="flex items-center justify-center p-3 bg-blue-50 border border-blue-100 rounded-xl text-blue-700 font-bold text-sm">
+            Total : {{reclamations.length}} Demandes active(s)
+        </div>
+    </div>
+
+    <!-- Reclamations List -->
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="bg-gray-50/50 text-gray-500 text-xs uppercase tracking-wider">
+                    <th class="px-6 py-4 font-semibold">Titre & ID</th>
+                    <th class="px-6 py-4 font-semibold">Copropriétaire</th>
+                    <th class="px-6 py-4 font-semibold">Résidence</th>
+                    <th class="px-6 py-4 font-semibold">Date</th>
+                    <th class="px-6 py-4 font-semibold">Source</th>
+                    <th class="px-6 py-4 font-semibold">Etat</th>
+                    <th class="px-6 py-4 font-semibold text-right">Action</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-50 transition-all">
+                <tr *ngFor="let rec of reclamations" (click)="viewDetails(rec)"
+                    class="hover:bg-blue-50/20 transition-colors cursor-pointer group">
+                    <td class="px-6 py-4">
+                        <div class="font-bold text-gray-900 group-hover:text-blue-600 transition-colors">{{rec.title}}
+                        </div>
+                        <div class="text-[10px] font-mono text-gray-400 tracking-tighter">{{rec.id}}</div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-2">
+                            <div
+                                class="h-8 w-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 text-xs font-bold uppercase ring-2 ring-white">
+                                {{rec.coproprietaire.charAt(0)}}
+                            </div>
+                            <span class="text-sm font-medium text-gray-700">{{rec.coproprietaire}}</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="text-sm text-gray-700">{{rec.residence}}</div>
+                        <div class="text-[10px] text-blue-600 font-bold uppercase">{{rec.lot}}</div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="text-sm font-medium text-gray-600">{{rec.date.split(',')[0]}}</div>
+                        <div class="text-[10px] text-gray-400 font-medium">{{rec.date.split(',')[1]}}</div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-2">
+                            <lucide-icon [name]="getSourceIcon(rec.source)" class="h-4 w-4 text-gray-400"></lucide-icon>
+                            <span
+                                class="text-xs font-semibold text-gray-500 uppercase tracking-widest">{{rec.source}}</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <app-status-badge [status]="rec.status"></app-status-badge>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <button
+                            class="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all group-hover:translate-x-1">
+                            <lucide-icon [name]="ChevronRight" class="h-5 w-5"></lucide-icon>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Details Modal (Drawer style) -->
+    <div *ngIf="selectedReclamation" class="fixed inset-0 z-50 flex justify-end transition-all duration-300"
+        [ngClass]="isModalOpen ? 'bg-black/40 backdrop-blur-sm' : 'bg-transparent pointer-events-none'">
+
+        <div
+            class="w-full max-w-xl bg-white h-screen shadow-2xl animate-in slide-in-from-right duration-300 p-0 flex flex-col">
+            <!-- Modal Header -->
+            <div class="p-6 border-b border-gray-100 flex items-center justify-between bg-white sticky top-0 z-10">
+                <div class="flex items-center gap-4">
+                    <button (click)="closeModal()"
+                        class="p-2 hover:bg-gray-100 rounded-full text-gray-400 hover:text-gray-600 transition-all">
+                        <lucide-icon [name]="ArrowLeft" class="h-5 w-5"></lucide-icon>
+                    </button>
+                    <div>
+                        <h2 class="text-lg font-bold text-gray-900 leading-none">Détails du dossier</h2>
+                        <span
+                            class="text-[10px] font-mono text-gray-400 uppercase tracking-widest">{{selectedReclamation.id}}</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button class="p-2 hover:bg-gray-100 rounded-lg text-gray-400">
+                        <lucide-icon [name]="CheckCircle2" class="h-5 w-5 text-green-500"></lucide-icon>
+                    </button>
+                    <button (click)="closeModal()" class="p-2 hover:bg-gray-100 rounded-full text-gray-400">
+                        <lucide-icon [name]="X" class="h-5 w-5"></lucide-icon>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="flex-1 overflow-y-auto p-8 space-y-8 custom-scrollbar">
+                <!-- Status & Title -->
+                <div class="space-y-4">
+                    <app-status-badge [status]="selectedReclamation.status"></app-status-badge>
+                    <h3 class="text-2xl font-black text-gray-900 leading-tight uppercase tracking-tight">
+                        {{selectedReclamation.title}}</h3>
+                </div>
+
+                <!-- Info Cards Grid -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100 space-y-1">
+                        <div
+                            class="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">
+                            <lucide-icon [name]="User" class="h-3 w-3"></lucide-icon> Copropriétaire
+                        </div>
+                        <div class="text-sm font-bold text-gray-900">{{selectedReclamation.coproprietaire}}</div>
+                        <div class="text-xs text-blue-600 font-mono font-bold">{{selectedReclamation.lot}}</div>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100 space-y-1">
+                        <div
+                            class="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">
+                            <lucide-icon [name]="Building" class="h-3 w-3"></lucide-icon> Résidence
+                        </div>
+                        <div class="text-sm font-bold text-gray-900">{{selectedReclamation.residence}}</div>
+                    </div>
+                </div>
+
+                <!-- Timing & Method -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="p-4 bg-blue-50/30 rounded-2xl border border-blue-100/50">
+                        <div
+                            class="flex items-center gap-2 text-xs font-bold text-blue-400 uppercase tracking-widest mb-2">
+                            <lucide-icon [name]="Calendar" class="h-3 w-3"></lucide-icon> Date de création
+                        </div>
+                        <div class="text-sm font-bold text-gray-900">{{selectedReclamation.date}}</div>
+                    </div>
+                    <div class="p-4 bg-purple-50/30 rounded-2xl border border-purple-100/50">
+                        <div
+                            class="flex items-center gap-2 text-xs font-bold text-purple-400 uppercase tracking-widest mb-2">
+                            <lucide-icon [name]="Smartphone" class="h-3 w-3"></lucide-icon> Soumis via
+                        </div>
+                        <div class="text-sm font-bold text-gray-900">{{selectedReclamation.source}}</div>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="space-y-3">
+                    <h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest">Description & Détails complets
+                    </h4>
+                    <div
+                        class="p-6 bg-white border border-gray-100 rounded-2xl shadow-sm text-gray-700 text-sm leading-relaxed italic">
+                        "{{selectedReclamation.description}}"
+                    </div>
+                </div>
+
+                <!-- Timeline / Steps -->
+                <div class="space-y-4">
+                    <h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest">Suivi d'intervention</h4>
+                    <div
+                        class="relative space-y-6 pl-8 before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-px before:bg-blue-100">
+                        <div class="relative">
+                            <div
+                                class="absolute -left-8 h-6 w-6 rounded-full bg-blue-600 text-white flex items-center justify-center ring-4 ring-blue-50">
+                                <lucide-icon [name]="CheckCircle2" class="h-3 w-3"></lucide-icon>
+                            </div>
+                            <div class="text-sm font-bold text-gray-900">Demande enregistrée</div>
+                            <div class="text-xs text-gray-400">{{selectedReclamation.date}}</div>
+                        </div>
+                        <div class="relative opacity-40">
+                            <div
+                                class="absolute -left-8 h-6 w-6 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center ring-4 ring-white">
+                                <lucide-icon [name]="Clock" class="h-3 w-3"></lucide-icon>
+                            </div>
+                            <div class="text-sm font-bold text-gray-900">Expert missionné</div>
+                            <div class="text-xs text-gray-400">En attente d'assignation...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="p-6 border-t border-gray-100 bg-gray-50/50 flex gap-4">
+                <button
+                    class="flex-1 py-4 bg-white border border-gray-200 rounded-2xl text-sm font-black uppercase text-gray-700 hover:bg-gray-100 transition-all shadow-sm">
+                    Rejeter
+                </button>
+                <button
+                    class="flex-[2] py-4 bg-blue-600 text-white rounded-2xl text-sm font-black uppercase hover:bg-blue-700 transition-all shadow-xl shadow-blue-600/20">
+                    Traiter le dossier
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

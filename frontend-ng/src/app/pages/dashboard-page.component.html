@@ -1,0 +1,161 @@
+<div class="p-8 space-y-8">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-blue-900 uppercase tracking-tight">TABLEAU DE BORD DIRECTION GÉNÉRALE
+            </h1>
+            <p class="text-gray-500 mt-1">Vue consolidée - Toutes résidences</p>
+        </div>
+        <div class="flex gap-3">
+            <button
+                class="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-gray-600 shadow-sm hover:bg-accent hover:text-accent-foreground">
+                Période <lucide-icon [name]="ArrowDown" class="ml-2 h-4 w-4"></lucide-icon>
+            </button>
+            <button
+                class="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-gray-600 shadow-sm hover:bg-accent hover:text-accent-foreground">
+                Exporter
+            </button>
+        </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+        <app-kpi-card title="Résidences" value="124" [icon]="Building" color="blue"></app-kpi-card>
+        <app-kpi-card title="Recouvrement" value="87.3%" [trend]="{ value: '+2.1%', isPositive: true }"
+            [icon]="CreditCard" color="green"></app-kpi-card>
+        <app-kpi-card title="Taux d'imp." value="12.7%" [trend]="{ value: '-0.8%', isPositive: true }"
+            [icon]="DollarSign" color="red"></app-kpi-card>
+        <app-kpi-card title="Réclamations" value="48" [trend]="{ value: '+6', isNeutral: true }" [icon]="FileText"
+            color="orange"></app-kpi-card>
+        <app-kpi-card title="Budget" value="94.2%" details="Stable" [icon]="BarChart3" color="purple"></app-kpi-card>
+        <app-kpi-card title="Satisfaction" value="4.2/5" [trend]="{ value: '+0.1', isPositive: true }" [icon]="Users"
+            color="blue"></app-kpi-card>
+    </div>
+
+    <!-- Charts Section Placeholder -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="rounded-xl border bg-card text-card-foreground shadow">
+            <div class="flex flex-col space-y-1.5 p-6">
+                <h3 class="text-lg font-semibold leading-none tracking-tight">SITUATION FINANCIÈRE: Budget vs Réel</h3>
+                <p class="text-sm text-muted-foreground">Données en milliers MAD (Jan - Juin)</p>
+            </div>
+            <div class="p-6 pt-0 h-80 flex items-center justify-center bg-gray-50 rounded-b-xl italic text-gray-400">
+                Espace réservé aux graphiques (Chart.js / Ngx-Charts)
+            </div>
+        </div>
+
+        <div class="rounded-xl border bg-card text-card-foreground shadow">
+            <div class="flex flex-col space-y-1.5 p-6">
+                <h3 class="text-lg font-semibold leading-none tracking-tight">ÉVOLUTION DES RÉCLAMATIONS</h3>
+                <p class="text-sm text-muted-foreground">Nouvelles vs Résolues (Jan - Juin)</p>
+            </div>
+            <div class="p-6 pt-0 h-80 flex items-center justify-center bg-gray-50 rounded-b-xl italic text-gray-400">
+                Espace réservé aux graphiques (Chart.js / Ngx-Charts)
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Layout -->
+    <div class="flex flex-col xl:flex-row gap-8">
+        <!-- Left Column (Tables) -->
+        <div class="flex-1 space-y-8">
+            <!-- Top Residences Table -->
+            <div class="rounded-xl border bg-card text-card-foreground shadow">
+                <div class="flex flex-row items-center justify-between p-6">
+                    <h3 class="flex items-center gap-2 text-lg font-semibold text-gray-800 leading-none tracking-tight">
+                        <span class="text-yellow-500">⚠️</span> TOP RÉSIDENCES - TAUX D'IMPAYÉS ÉLEVÉS
+                    </h3>
+                    <button class="text-sm font-medium text-blue-600 hover:underline">Voir tout →</button>
+                </div>
+                <div class="p-6 pt-0">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead class="text-gray-500 border-b">
+                                <tr>
+                                    <th class="text-left py-3 font-medium">Résidence</th>
+                                    <th class="text-right py-3 font-medium">Taux d'imp.</th>
+                                    <th class="text-right py-3 font-medium">Montant</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y">
+                                <tr *ngFor="let res of topResidences">
+                                    <td class="py-3 font-medium text-gray-900">{{res.name}}</td>
+                                    <td class="py-3 text-right text-red-600 font-bold">{{res.rate}}%</td>
+                                    <td class="py-3 text-right text-gray-600">{{res.amount}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Reclamations Table -->
+            <div class="rounded-xl border bg-card text-card-foreground shadow">
+                <div class="flex flex-row items-center justify-between p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 leading-none tracking-tight">DERNIÈRES RÉCLAMATIONS
+                    </h3>
+                    <button class="text-sm font-medium text-blue-600 hover:underline">Voir tout →</button>
+                </div>
+                <div class="p-6 pt-0">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead class="text-gray-500 border-b">
+                                <tr>
+                                    <th class="text-left py-3 font-medium">RÉF.</th>
+                                    <th class="text-left py-3 font-medium">RÉSIDENCE</th>
+                                    <th class="text-left py-3 font-medium">COPROPRIÉTAIRE</th>
+                                    <th class="text-left py-3 font-medium">TYPE</th>
+                                    <th class="text-left py-3 font-medium">STATUT</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y">
+                                <tr *ngFor="let rec of recentReclamations"
+                                    class="group hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 font-medium text-gray-900">{{rec.id}}</td>
+                                    <td class="py-3 text-gray-600">{{rec.residence}}</td>
+                                    <td class="py-3 text-gray-600">{{rec.copro}}</td>
+                                    <td class="py-3 text-gray-600">{{rec.type}}</td>
+                                    <td class="py-3">
+                                        <app-status-badge [status]="rec.status"></app-status-badge>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar (Alerts) -->
+        <div class="w-full xl:w-[320px] space-y-4">
+            <h3 class="text-lg font-bold text-gray-900 uppercase tracking-tight mb-4">ALERTES CRITIQUES</h3>
+
+            <div class="rounded-lg border-l-4 border-red-500 bg-red-50 p-4 shadow-sm">
+                <h4 class="font-bold text-red-800 flex items-center gap-2">
+                    <span class="h-2 w-2 rounded-full bg-red-600 animate-pulse"></span>
+                    RÉSIDENCE OASIS
+                </h4>
+                <p class="mt-1 text-sm text-red-700">Dépassement budget >15%</p>
+                <p class="text-sm text-red-700 font-medium">Taux impayés: 22%</p>
+            </div>
+
+            <div class="rounded-lg border-l-4 border-orange-500 bg-orange-50 p-4 shadow-sm">
+                <h4 class="font-bold text-orange-800 flex items-center gap-2">
+                    <span class="h-2 w-2 rounded-full bg-orange-600"></span>
+                    RÉSIDENCE ATLAS
+                </h4>
+                <p class="mt-1 text-sm text-orange-700">Recouvrement < 70%</p>
+                        <p class="text-sm text-orange-700 font-medium">Actuellement: 68%</p>
+            </div>
+
+            <div class="rounded-lg border-l-4 border-yellow-500 bg-yellow-50 p-4 shadow-sm">
+                <h4 class="font-bold text-yellow-800 flex items-center gap-2">
+                    <span class="h-2 w-2 rounded-full bg-yellow-600"></span>
+                    RÉCLAMATIONS
+                </h4>
+                <p class="mt-1 text-sm text-yellow-700">48 ouvertes</p>
+                <p class="text-sm text-yellow-700 font-medium">12 en retard (>7 jours)</p>
+            </div>
+        </div>
+    </div>
+</div>

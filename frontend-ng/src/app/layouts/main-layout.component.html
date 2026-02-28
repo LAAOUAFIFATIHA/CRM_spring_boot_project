@@ -1,0 +1,70 @@
+<div class="flex h-screen bg-gray-50">
+    <!-- Sidebar -->
+    <aside class="flex flex-col border-r border-gray-800 bg-[#0f0f1a] text-white transition-all duration-300"
+        [ngClass]="collapsed ? 'w-[60px]' : 'w-[260px]'">
+        <div class="flex h-16 items-center px-4 py-4" [ngClass]="collapsed ? 'justify-center' : 'justify-between'">
+            <div *ngIf="!collapsed" class="flex items-center gap-2 font-bold text-xl">
+                <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white">
+                    <lucide-icon [name]="Building2" class="h-5 w-5"></lucide-icon>
+                </div>
+                <span class="bg-gradient-to-r from-blue-400 to-blue-200 bg-clip-text text-transparent">SyndicPro</span>
+            </div>
+            <div *ngIf="collapsed" class="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white">
+                <lucide-icon [name]="Building2" class="h-5 w-5"></lucide-icon>
+            </div>
+
+            <button *ngIf="!collapsed" (click)="toggleSidebar()"
+                class="rounded-full bg-gray-800 p-1.5 text-gray-400 hover:bg-gray-700 hover:text-white">
+                <lucide-icon [name]="ChevronLeft" class="h-4 w-4"></lucide-icon>
+            </button>
+        </div>
+
+        <div *ngIf="collapsed" class="flex justify-center pb-2">
+            <button (click)="toggleSidebar()"
+                class="rounded-full bg-gray-800 p-1.5 text-gray-400 hover:bg-gray-700 hover:text-white">
+                <lucide-icon [name]="ChevronRight" class="h-4 w-4"></lucide-icon>
+            </button>
+        </div>
+
+        <nav class="flex-1 space-y-1 overflow-y-auto px-2 py-4 custom-scrollbar">
+            <a *ngFor="let item of menuItems" [routerLink]="item.href" routerLinkActive="bg-blue-600 text-white"
+                [routerLinkActiveOptions]="{exact: true}"
+                class="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors text-gray-400 hover:bg-white/10 hover:text-white"
+                [ngClass]="{'justify-center px-2': collapsed}" [title]="collapsed ? item.label : ''">
+                <lucide-icon [name]="item.icon" class="h-5 w-5 shrink-0"></lucide-icon>
+                <span *ngIf="!collapsed">{{item.label}}</span>
+            </a>
+        </nav>
+
+        <div class="border-t border-gray-800 p-4">
+            <div class="flex items-center gap-3" [ngClass]="collapsed ? 'justify-center' : ''">
+                <div
+                    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-900 text-blue-200 ring-2 ring-blue-900/50">
+                    <span class="font-semibold">N</span>
+                </div>
+                <div *ngIf="!collapsed" class="overflow-hidden">
+                    <p class="truncate text-sm font-medium text-white">{{userLabel}}</p>
+                    <p class="truncate text-xs text-gray-400">v2.4.1</p>
+                </div>
+            </div>
+            <button (click)="logout()"
+                class="mt-4 flex w-full items-center gap-2 rounded-lg py-2 text-sm font-medium text-red-400 transition-colors hover:bg-red-950/30 hover:text-red-300"
+                [ngClass]="collapsed ? 'justify-center' : 'px-2'" [title]="collapsed ? 'Déconnexion' : ''">
+                <lucide-icon [name]="LogOut" class="h-5 w-5 shrink-0"></lucide-icon>
+                <span *ngIf="!collapsed">Déconnexion</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Mobile Toggle Button -->
+    <button
+        class="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-blue-600 text-white shadow-xl lg:hidden hover:bg-blue-700 transition-colors"
+        (click)="toggleSidebar()">
+        <lucide-icon [name]="collapsed ? ChevronRight : ChevronLeft" class="h-6 w-6"></lucide-icon>
+    </button>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto bg-[#f8f9fa]">
+        <router-outlet></router-outlet>
+    </main>
+</div>
